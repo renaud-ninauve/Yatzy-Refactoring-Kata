@@ -235,6 +235,10 @@ public class Yatzy1 {
     }
 
     public static int fullHouse(int d1, int d2, int d3, int d4, int d5) {
+        return new Yatzy1(d1, d2, d3, d4, d5).fullHouse();
+    }
+
+    public int fullHouse() {
         int[] tallies;
         boolean _2 = false;
         int i;
@@ -244,11 +248,11 @@ public class Yatzy1 {
 
 
         tallies = new int[6];
-        tallies[d1 - 1] += 1;
-        tallies[d2 - 1] += 1;
-        tallies[d3 - 1] += 1;
-        tallies[d4 - 1] += 1;
-        tallies[d5 - 1] += 1;
+        tallies[dice[0] - 1] += 1;
+        tallies[dice[1] - 1] += 1;
+        tallies[dice[2] - 1] += 1;
+        tallies[dice[3] - 1] += 1;
+        tallies[dice[4] - 1] += 1;
 
         for (i = 0; i != 6; i += 1)
             if (tallies[i] == 2) {
