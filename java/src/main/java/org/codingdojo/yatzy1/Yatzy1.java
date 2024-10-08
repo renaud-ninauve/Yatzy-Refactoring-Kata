@@ -17,6 +17,10 @@ public class Yatzy1 {
     }
 
     public static int yatzy(int... dice) {
+        return dice.length >= 5 ? new Yatzy1(dice[0], dice[1], dice[2], dice[3], dice[4]).yatzy() : 0;
+    }
+
+    public int yatzy() {
         int[] counts = new int[6];
         for (int die : dice)
             counts[die - 1]++;
@@ -25,6 +29,7 @@ public class Yatzy1 {
                 return 50;
         return 0;
     }
+
 
     public static int ones(int d1, int d2, int d3, int d4, int d5) {
         int sum = 0;
