@@ -1,78 +1,51 @@
 package org.codingdojo.yatzy1;
 
+import java.util.Arrays;
+
 public class Yatzy1 {
 
     public static int chance(int d1, int d2, int d3, int d4, int d5) {
         return new Yatzy1(d1, d2, d3, d4, d5).chance();
     }
 
-    public int chance() {
-        int total = 0;
-        total += dice[0];
-        total += dice[1];
-        total += dice[2];
-        total += dice[3];
-        total += dice[4];
-        return total;
-    }
-
     public static int yatzy(int... dice) {
         return dice.length >= 5 ? new Yatzy1(dice[0], dice[1], dice[2], dice[3], dice[4]).yatzy() : 0;
-    }
-
-    public int yatzy() {
-        int[] counts = new int[6];
-        for (int die : dice)
-            counts[die - 1]++;
-        for (int i = 0; i != 6; i++)
-            if (counts[i] == 5)
-                return 50;
-        return 0;
     }
 
     public static int ones(int d1, int d2, int d3, int d4, int d5) {
         return new Yatzy1(d1, d2, d3, d4, d5).ones();
     }
 
-    public int ones() {
-        int sum = 0;
-        if (dice[0] == 1) sum++;
-        if (dice[1] == 1) sum++;
-        if (dice[2] == 1) sum++;
-        if (dice[3] == 1) sum++;
-        if (dice[4] == 1)
-            sum++;
-
-        return sum;
-    }
-
     public static int twos(int d1, int d2, int d3, int d4, int d5) {
         return new Yatzy1(d1, d2, d3, d4, d5).twos();
-    }
-
-    public int twos() {
-        int sum = 0;
-        if (dice[0] == 2) sum += 2;
-        if (dice[1] == 2) sum += 2;
-        if (dice[2] == 2) sum += 2;
-        if (dice[3] == 2) sum += 2;
-        if (dice[4] == 2) sum += 2;
-        return sum;
     }
 
     public static int threes(int d1, int d2, int d3, int d4, int d5) {
         return new Yatzy1(d1, d2, d3, d4, d5).threes();
     }
 
-    public int threes() {
-        int s;
-        s = 0;
-        if (dice[0] == 3) s += 3;
-        if (dice[1] == 3) s += 3;
-        if (dice[2] == 3) s += 3;
-        if (dice[3] == 3) s += 3;
-        if (dice[4] == 3) s += 3;
-        return s;
+    public static int two_pair(int d1, int d2, int d3, int d4, int d5) {
+        return new Yatzy1(d1, d2, d3, d4, d5).two_pair();
+    }
+
+    public static int smallStraight(int d1, int d2, int d3, int d4, int d5) {
+        return new Yatzy1(d1, d2, d3, d4, d5).smallStraight();
+    }
+
+    public static int largeStraight(int d1, int d2, int d3, int d4, int d5) {
+        return new Yatzy1(d1, d2, d3, d4, d5).largeStraight();
+    }
+
+    public static int four_of_a_kind(int d1, int d2, int d3, int d4, int d5) {
+        return new Yatzy1(d1, d2, d3, d4, d5).four_of_a_kind();
+    }
+
+    public static int three_of_a_kind(int d1, int d2, int d3, int d4, int d5) {
+        return new Yatzy1(d1, d2, d3, d4, d5).three_of_a_kind();
+    }
+
+    public static int fullHouse(int d1, int d2, int d3, int d4, int d5) {
+        return new Yatzy1(d1, d2, d3, d4, d5).fullHouse();
     }
 
     protected int[] dice;
@@ -88,6 +61,41 @@ public class Yatzy1 {
         dice[2] = d3;
         dice[3] = d4;
         dice[4] = _5;
+    }
+
+    public int chance() {
+        int total = 0;
+        total += dice[0];
+        total += dice[1];
+        total += dice[2];
+        total += dice[3];
+        total += dice[4];
+        return total;
+    }
+
+    public int ones() {
+        return sumOf(1);
+    }
+
+    public int twos() {
+        int sum = 0;
+        if (dice[0] == 2) sum += 2;
+        if (dice[1] == 2) sum += 2;
+        if (dice[2] == 2) sum += 2;
+        if (dice[3] == 2) sum += 2;
+        if (dice[4] == 2) sum += 2;
+        return sum;
+    }
+
+    public int threes() {
+        int s;
+        s = 0;
+        if (dice[0] == 3) s += 3;
+        if (dice[1] == 3) s += 3;
+        if (dice[2] == 3) s += 3;
+        if (dice[3] == 3) s += 3;
+        if (dice[4] == 3) s += 3;
+        return s;
     }
 
     public int fours() {
@@ -118,6 +126,12 @@ public class Yatzy1 {
         return sum;
     }
 
+    private int sumOf(int value) {
+        return Arrays.stream(dice)
+            .filter(d -> d == value)
+            .sum();
+    }
+
     public int score_pair(int d1, int d2, int d3, int d4, int d5) {
         int[] counts = new int[6];
         counts[d1 - 1]++;
@@ -130,10 +144,6 @@ public class Yatzy1 {
             if (counts[6 - at - 1] >= 2)
                 return (6 - at) * 2;
         return 0;
-    }
-
-    public static int two_pair(int d1, int d2, int d3, int d4, int d5) {
-        return new Yatzy1(d1, d2, d3, d4, d5).two_pair();
     }
 
     public int two_pair() {
@@ -156,10 +166,6 @@ public class Yatzy1 {
             return 0;
     }
 
-    public static int four_of_a_kind(int d1, int d2, int d3, int d4, int d5) {
-        return new Yatzy1(d1, d2, d3, d4, d5).four_of_a_kind();
-    }
-
     public int four_of_a_kind() {
         int[] tallies;
         tallies = new int[6];
@@ -174,10 +180,6 @@ public class Yatzy1 {
         return 0;
     }
 
-    public static int three_of_a_kind(int d1, int d2, int d3, int d4, int d5) {
-        return new Yatzy1(d1, d2, d3, d4, d5).three_of_a_kind();
-    }
-
     public int three_of_a_kind() {
         int[] t;
         t = new int[6];
@@ -190,10 +192,6 @@ public class Yatzy1 {
             if (t[i] >= 3)
                 return (i + 1) * 3;
         return 0;
-    }
-
-    public static int smallStraight(int d1, int d2, int d3, int d4, int d5) {
-        return new Yatzy1(d1, d2, d3, d4, d5).smallStraight();
     }
 
     public int smallStraight() {
@@ -213,10 +211,6 @@ public class Yatzy1 {
         return 0;
     }
 
-    public static int largeStraight(int d1, int d2, int d3, int d4, int d5) {
-        return new Yatzy1(d1, d2, d3, d4, d5).largeStraight();
-    }
-
     public int largeStraight() {
         int[] tallies;
         tallies = new int[6];
@@ -232,10 +226,6 @@ public class Yatzy1 {
             && tallies[5] == 1)
             return 20;
         return 0;
-    }
-
-    public static int fullHouse(int d1, int d2, int d3, int d4, int d5) {
-        return new Yatzy1(d1, d2, d3, d4, d5).fullHouse();
     }
 
     public int fullHouse() {
@@ -270,6 +260,16 @@ public class Yatzy1 {
             return _2_at * 2 + _3_at * 3;
         else
             return 0;
+    }
+
+    public int yatzy() {
+        int[] counts = new int[6];
+        for (int die : dice)
+            counts[die - 1]++;
+        for (int i = 0; i != 6; i++)
+            if (counts[i] == 5)
+                return 50;
+        return 0;
     }
 }
 
