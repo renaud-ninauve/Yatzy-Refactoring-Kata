@@ -61,13 +61,17 @@ public class Yatzy1 {
     }
 
     public static int threes(int d1, int d2, int d3, int d4, int d5) {
+        return new Yatzy1(d1, d2, d3, d4, d5).threes();
+    }
+
+    public int threes() {
         int s;
         s = 0;
-        if (d1 == 3) s += 3;
-        if (d2 == 3) s += 3;
-        if (d3 == 3) s += 3;
-        if (d4 == 3) s += 3;
-        if (d5 == 3) s += 3;
+        if (dice[0] == 3) s += 3;
+        if (dice[1] == 3) s += 3;
+        if (dice[2] == 3) s += 3;
+        if (dice[3] == 3) s += 3;
+        if (dice[4] == 3) s += 3;
         return s;
     }
 
