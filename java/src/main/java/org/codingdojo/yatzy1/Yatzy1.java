@@ -1,6 +1,8 @@
 package org.codingdojo.yatzy1;
 
-import java.util.Arrays;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Yatzy1 {
 
@@ -46,6 +48,10 @@ public class Yatzy1 {
 
     public static int fullHouse(int d1, int d2, int d3, int d4, int d5) {
         return new Yatzy1(d1, d2, d3, d4, d5).fullHouse();
+    }
+
+    public static int score_pair(int d1, int d2, int d3, int d4, int d5) {
+        return new Yatzy1(d1, d2, d3, d4, d5).score_pair();
     }
 
     protected int[] dice;
@@ -103,18 +109,24 @@ public class Yatzy1 {
             .sum();
     }
 
-    public int score_pair(int d1, int d2, int d3, int d4, int d5) {
-        int[] counts = new int[6];
-        counts[d1 - 1]++;
-        counts[d2 - 1]++;
-        counts[d3 - 1]++;
-        counts[d4 - 1]++;
-        counts[d5 - 1]++;
-        int at;
-        for (at = 0; at != 6; at++)
-            if (counts[6 - at - 1] >= 2)
-                return (6 - at) * 2;
-        return 0;
+    private TreeMap<Integer, List<Integer>> frequenciesBiggestFirst() {
+        Map<Integer, Integer> frequenciesByValue = Arrays.stream(dice)
+            .boxed()
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.summingInt(i -> i)));
+
+        return frequenciesByValue.entrySet().stream()
+            .collect(Collectors.groupingBy(Map.Entry::getValue, () -> new TreeMap<>(Comparator.<Integer>naturalOrder().reversed()), Collectors.mapping(Map.Entry::getKey, Collectors.toList())));
+    }
+
+    public int score_pair() {
+        Map<Integer, List<Integer>> frequencies = frequenciesBiggestFirst();
+        final int biggestFrequency = frequencies.keySet().stream().findFirst().orElse(0);
+        if (biggestFrequency < 2) {
+            return 0;
+        }
+
+        int diceValue = frequencies.get(biggestFrequency).get(0);
+        return diceValue * 2;
     }
 
     public int two_pair() {
