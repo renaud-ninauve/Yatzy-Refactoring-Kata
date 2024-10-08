@@ -78,52 +78,23 @@ public class Yatzy1 {
     }
 
     public int twos() {
-        int sum = 0;
-        if (dice[0] == 2) sum += 2;
-        if (dice[1] == 2) sum += 2;
-        if (dice[2] == 2) sum += 2;
-        if (dice[3] == 2) sum += 2;
-        if (dice[4] == 2) sum += 2;
-        return sum;
+        return sumOf(2);
     }
 
     public int threes() {
-        int s;
-        s = 0;
-        if (dice[0] == 3) s += 3;
-        if (dice[1] == 3) s += 3;
-        if (dice[2] == 3) s += 3;
-        if (dice[3] == 3) s += 3;
-        if (dice[4] == 3) s += 3;
-        return s;
+        return sumOf(3);
     }
 
     public int fours() {
-        int sum;
-        sum = 0;
-        for (int at = 0; at != 5; at++) {
-            if (dice[at] == 4) {
-                sum += 4;
-            }
-        }
-        return sum;
+        return sumOf(4);
     }
 
     public int fives() {
-        int s = 0;
-        int i;
-        for (i = 0; i < dice.length; i++)
-            if (dice[i] == 5)
-                s = s + 5;
-        return s;
+        return sumOf(5);
     }
 
     public int sixes() {
-        int sum = 0;
-        for (int at = 0; at < dice.length; at++)
-            if (dice[at] == 6)
-                sum = sum + 6;
-        return sum;
+        return sumOf(6);
     }
 
     private int sumOf(int value) {
