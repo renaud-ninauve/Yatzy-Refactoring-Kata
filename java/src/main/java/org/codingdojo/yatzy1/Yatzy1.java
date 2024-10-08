@@ -133,12 +133,16 @@ public class Yatzy1 {
     }
 
     public static int two_pair(int d1, int d2, int d3, int d4, int d5) {
+        return new Yatzy1(d1, d2, d3, d4, d5).two_pair();
+    }
+
+    public int two_pair() {
         int[] counts = new int[6];
-        counts[d1 - 1]++;
-        counts[d2 - 1]++;
-        counts[d3 - 1]++;
-        counts[d4 - 1]++;
-        counts[d5 - 1]++;
+        counts[dice[0] - 1]++;
+        counts[dice[1] - 1]++;
+        counts[dice[2] - 1]++;
+        counts[dice[3] - 1]++;
+        counts[dice[4] - 1]++;
         int n = 0;
         int score = 0;
         for (int i = 0; i < 6; i += 1)
