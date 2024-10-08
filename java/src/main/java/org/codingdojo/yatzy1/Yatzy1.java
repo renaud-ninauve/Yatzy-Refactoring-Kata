@@ -47,12 +47,16 @@ public class Yatzy1 {
     }
 
     public static int twos(int d1, int d2, int d3, int d4, int d5) {
+        return new Yatzy1(d1, d2, d3, d4, d5).twos();
+    }
+
+    public int twos() {
         int sum = 0;
-        if (d1 == 2) sum += 2;
-        if (d2 == 2) sum += 2;
-        if (d3 == 2) sum += 2;
-        if (d4 == 2) sum += 2;
-        if (d5 == 2) sum += 2;
+        if (dice[0] == 2) sum += 2;
+        if (dice[1] == 2) sum += 2;
+        if (dice[2] == 2) sum += 2;
+        if (dice[3] == 2) sum += 2;
+        if (dice[4] == 2) sum += 2;
         return sum;
     }
 
