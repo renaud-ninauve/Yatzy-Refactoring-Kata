@@ -110,79 +110,45 @@ public class Yatzy1 {
             .sum();
     }
 
-    private static class Frequencies {
-        private final Map<Integer, List<Integer>> frequencies;
+    private List<Integer> dicesAppearingAtLeast(int times) {
+        Map<Integer, Long> countByDice = Arrays.stream(dice)
+            .boxed()
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-        private static Frequencies from(List<Integer> dices) {
-            Map<Integer, Long> counts = dices.stream()
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        return countByDice.entrySet().stream()
+            .filter(e -> e.getValue() >= times)
+            .map(Map.Entry::getKey)
+            .toList();
+    }
 
-            Map<Integer, List<Integer>> frequencies = counts.entrySet().stream()
-                .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), e.getValue().intValue()))
-                .collect(Collectors.groupingBy(Map.Entry::getValue, Collectors.mapping(Map.Entry::getKey, Collectors.toList())));
-
-            return new Frequencies(frequencies);
-        }
-
-        private Frequencies(Map<Integer, List<Integer>> frequencies) {
-            this.frequencies = frequencies;
-        }
-
-        private List<Integer> findDiceValuesByMinFrequency(int minFrequency) {
-            return frequencies.entrySet().stream()
-                .filter(e -> e.getKey() >= minFrequency)
-                .map(Map.Entry::getValue)
-                .flatMap(List::stream)
-                .distinct()
-                .toList();
-        }
+    private int score_n_of_a_kind(int n) {
+        List<Integer> nOfAKinds = dicesAppearingAtLeast(n);
+        return nOfAKinds.stream()
+            .max(Comparator.<Integer>naturalOrder()).orElse(0) * n;
     }
 
     public int score_pair() {
-        Frequencies frequencies = Frequencies.from(Arrays.stream(dice).boxed().toList());
-        List<Integer> pairs = frequencies.findDiceValuesByMinFrequency(2);
-        return pairs.stream()
-            .mapToInt(Integer::intValue)
-            .max()
-            .orElse(0) * 2;
+        return score_n_of_a_kind(2);
     }
 
     public int two_pair() {
-        Frequencies frequencies = Frequencies.from(Arrays.stream(dice).boxed().toList());
-        List<Integer> pairs = frequencies.findDiceValuesByMinFrequency(2);
+        List<Integer> pairs = dicesAppearingAtLeast(2);
         if (pairs.size() < 2) {
             return 0;
         }
-
         return pairs.stream()
             .sorted(Comparator.<Integer>naturalOrder().reversed())
             .limit(2)
-            .mapToInt(i -> i * 2)
+            .mapToInt(d -> d * 2)
             .sum();
     }
 
     public int four_of_a_kind() {
-        Frequencies frequencies = Frequencies.from(Arrays.stream(dice).boxed().toList());
-        List<Integer> fourOfAKinds = frequencies.findDiceValuesByMinFrequency(4);
-        return fourOfAKinds.stream()
-            .sorted(Comparator.<Integer>naturalOrder().reversed())
-            .mapToInt(d -> d * 4)
-            .findFirst()
-            .orElse(0);
+        return score_n_of_a_kind(4);
     }
 
     public int three_of_a_kind() {
-        int[] t;
-        t = new int[6];
-        t[dice[0] - 1]++;
-        t[dice[1] - 1]++;
-        t[dice[2] - 1]++;
-        t[dice[3] - 1]++;
-        t[dice[4] - 1]++;
-        for (int i = 0; i < 6; i++)
-            if (t[i] >= 3)
-                return (i + 1) * 3;
-        return 0;
+        return score_n_of_a_kind(3);
     }
 
     public int smallStraight() {
@@ -220,47 +186,23 @@ public class Yatzy1 {
     }
 
     public int fullHouse() {
-        int[] tallies;
-        boolean _2 = false;
-        int i;
-        int _2_at = 0;
-        boolean _3 = false;
-        int _3_at = 0;
-
-
-        tallies = new int[6];
-        tallies[dice[0] - 1] += 1;
-        tallies[dice[1] - 1] += 1;
-        tallies[dice[2] - 1] += 1;
-        tallies[dice[3] - 1] += 1;
-        tallies[dice[4] - 1] += 1;
-
-        for (i = 0; i != 6; i += 1)
-            if (tallies[i] == 2) {
-                _2 = true;
-                _2_at = i + 1;
-            }
-
-        for (i = 0; i != 6; i += 1)
-            if (tallies[i] == 3) {
-                _3 = true;
-                _3_at = i + 1;
-            }
-
-        if (_2 && _3)
-            return _2_at * 2 + _3_at * 3;
-        else
+        List<Integer> threeOfAKinds = dicesAppearingAtLeast(3);
+        if (threeOfAKinds.isEmpty()) {
             return 0;
+        }
+        int threeOfAKind = threeOfAKinds.stream().max(Comparator.<Integer>naturalOrder()).orElseThrow(() -> new AssertionError("should not happen"));
+
+        List<Integer> pairs = dicesAppearingAtLeast(2);
+        return pairs.stream()
+            .filter(d -> d != threeOfAKind)
+            .max(Comparator.<Integer>naturalOrder())
+            .map(pair -> pair * 2 + threeOfAKind * 3)
+            .orElse(0);
     }
 
     public int yatzy() {
-        int[] counts = new int[6];
-        for (int die : dice)
-            counts[die - 1]++;
-        for (int i = 0; i != 6; i++)
-            if (counts[i] == 5)
-                return 50;
-        return 0;
+        List<Integer> yatzies = dicesAppearingAtLeast(5);
+        return yatzies.isEmpty() ? 0 : 50;
     }
 }
 
