@@ -109,24 +109,30 @@ public class Yatzy1 {
             .sum();
     }
 
-    private TreeMap<Integer, List<Integer>> frequenciesBiggestFirst() {
-        Map<Integer, Integer> frequenciesByValue = Arrays.stream(dice)
+    private TreeMap<Integer, TreeSet<Integer>> frequenciesMoreFrequentBiggerFirst() {
+        Map<Integer, Long> frequenciesByValue = Arrays.stream(dice)
             .boxed()
-            .collect(Collectors.groupingBy(Function.identity(), Collectors.summingInt(i -> i)));
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         return frequenciesByValue.entrySet().stream()
-            .collect(Collectors.groupingBy(Map.Entry::getValue, () -> new TreeMap<>(Comparator.<Integer>naturalOrder().reversed()), Collectors.mapping(Map.Entry::getKey, Collectors.toList())));
+            .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), e.getValue().intValue()))
+            .collect(Collectors.groupingBy(Map.Entry::getValue, () -> new TreeMap<>(Comparator.<Integer>naturalOrder().reversed()), Collectors.mapping(Map.Entry::getKey, Collectors.toCollection(() -> new TreeSet<>(Comparator.<Integer>naturalOrder().reversed())))));
     }
 
     public int score_pair() {
-        Map<Integer, List<Integer>> frequencies = frequenciesBiggestFirst();
+        TreeMap<Integer, TreeSet<Integer>> frequencies = frequenciesMoreFrequentBiggerFirst();
         final int biggestFrequency = frequencies.keySet().stream().findFirst().orElse(0);
         if (biggestFrequency < 2) {
             return 0;
         }
 
-        int diceValue = frequencies.get(biggestFrequency).get(0);
-        return diceValue * 2;
+        int maxPair = frequencies.headMap(2, true).values().stream()
+            .flatMap(Set::stream)
+            .mapToInt(i -> i)
+            .max()
+            .orElse(0);
+
+        return maxPair * 2;
     }
 
     public int two_pair() {
