@@ -109,30 +109,41 @@ public class Yatzy1 {
             .sum();
     }
 
-    private TreeMap<Integer, TreeSet<Integer>> frequenciesMoreFrequentBiggerFirst() {
-        Map<Integer, Long> frequenciesByValue = Arrays.stream(dice)
-            .boxed()
-            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+    private static class Frequencies {
+        private final Map<Integer, List<Integer>> frequencies;
 
-        return frequenciesByValue.entrySet().stream()
-            .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), e.getValue().intValue()))
-            .collect(Collectors.groupingBy(Map.Entry::getValue, () -> new TreeMap<>(Comparator.<Integer>naturalOrder().reversed()), Collectors.mapping(Map.Entry::getKey, Collectors.toCollection(() -> new TreeSet<>(Comparator.<Integer>naturalOrder().reversed())))));
+        private static Frequencies from(List<Integer> dices) {
+            Map<Integer, Long> counts = dices.stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+            Map<Integer, List<Integer>> frequencies = counts.entrySet().stream()
+                .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), e.getValue().intValue()))
+                .collect(Collectors.groupingBy(Map.Entry::getValue, Collectors.mapping(Map.Entry::getKey, Collectors.toList())));
+
+            return new Frequencies(frequencies);
+        }
+
+        private Frequencies(Map<Integer, List<Integer>> frequencies) {
+            this.frequencies = frequencies;
+        }
+
+        private List<Integer> findDiceValuesByMinFrequency(int minFrequency) {
+            return frequencies.entrySet().stream()
+                .filter(e -> e.getKey() >= minFrequency)
+                .map(Map.Entry::getValue)
+                .flatMap(List::stream)
+                .distinct()
+                .toList();
+        }
     }
 
     public int score_pair() {
-        TreeMap<Integer, TreeSet<Integer>> frequencies = frequenciesMoreFrequentBiggerFirst();
-        final int biggestFrequency = frequencies.keySet().stream().findFirst().orElse(0);
-        if (biggestFrequency < 2) {
-            return 0;
-        }
-
-        int maxPair = frequencies.headMap(2, true).values().stream()
-            .flatMap(Set::stream)
-            .mapToInt(i -> i)
+        Frequencies frequencies = Frequencies.from(Arrays.stream(dice).boxed().toList());
+        List<Integer> pairs = frequencies.findDiceValuesByMinFrequency(2);
+        return pairs.stream()
+            .mapToInt(Integer::intValue)
             .max()
-            .orElse(0);
-
-        return maxPair * 2;
+            .orElse(0) * 2;
     }
 
     public int two_pair() {
