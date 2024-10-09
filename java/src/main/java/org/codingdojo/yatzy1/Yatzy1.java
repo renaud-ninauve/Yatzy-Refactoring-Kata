@@ -3,7 +3,6 @@ package org.codingdojo.yatzy1;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Yatzy1 {
 
@@ -71,13 +70,7 @@ public class Yatzy1 {
     }
 
     public int chance() {
-        int total = 0;
-        total += dice[0];
-        total += dice[1];
-        total += dice[2];
-        total += dice[3];
-        total += dice[4];
-        return total;
+        return Arrays.stream(dice).sum();
     }
 
     public int ones() {
@@ -152,37 +145,20 @@ public class Yatzy1 {
     }
 
     public int smallStraight() {
-        int[] tallies;
-        tallies = new int[6];
-        tallies[dice[0] - 1] += 1;
-        tallies[dice[1] - 1] += 1;
-        tallies[dice[2] - 1] += 1;
-        tallies[dice[3] - 1] += 1;
-        tallies[dice[4] - 1] += 1;
-        if (tallies[0] == 1 &&
-            tallies[1] == 1 &&
-            tallies[2] == 1 &&
-            tallies[3] == 1 &&
-            tallies[4] == 1)
-            return 15;
-        return 0;
+        final List<Integer> smallStraight = List.of(1, 2, 3, 4, 5);
+        return matches(smallStraight) ? 15: 0;
+    }
+
+    private boolean matches(List<Integer> expectedDices) {
+        final List<Integer> expectedSorted = new ArrayList<>(expectedDices);
+        expectedSorted.sort(Comparator.naturalOrder());
+        final List<Integer> actualSorted = Arrays.stream(dice).sorted().boxed().toList();
+        return actualSorted.equals(expectedSorted);
     }
 
     public int largeStraight() {
-        int[] tallies;
-        tallies = new int[6];
-        tallies[dice[0] - 1] += 1;
-        tallies[dice[1] - 1] += 1;
-        tallies[dice[2] - 1] += 1;
-        tallies[dice[3] - 1] += 1;
-        tallies[dice[4] - 1] += 1;
-        if (tallies[1] == 1 &&
-            tallies[2] == 1 &&
-            tallies[3] == 1 &&
-            tallies[4] == 1
-            && tallies[5] == 1)
-            return 20;
-        return 0;
+        final List<Integer> smallStraight = List.of(2, 3, 4, 5, 6);
+        return matches(smallStraight) ? 20: 0;
     }
 
     public int fullHouse() {
