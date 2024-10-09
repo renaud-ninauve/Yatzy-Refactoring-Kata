@@ -162,17 +162,13 @@ public class Yatzy1 {
     }
 
     public int four_of_a_kind() {
-        int[] tallies;
-        tallies = new int[6];
-        tallies[dice[0] - 1]++;
-        tallies[dice[1] - 1]++;
-        tallies[dice[2] - 1]++;
-        tallies[dice[3] - 1]++;
-        tallies[dice[4] - 1]++;
-        for (int i = 0; i < 6; i++)
-            if (tallies[i] >= 4)
-                return (i + 1) * 4;
-        return 0;
+        Frequencies frequencies = Frequencies.from(Arrays.stream(dice).boxed().toList());
+        List<Integer> fourOfAKinds = frequencies.findDiceValuesByMinFrequency(4);
+        return fourOfAKinds.stream()
+            .sorted(Comparator.<Integer>naturalOrder().reversed())
+            .mapToInt(d -> d * 4)
+            .findFirst()
+            .orElse(0);
     }
 
     public int three_of_a_kind() {
