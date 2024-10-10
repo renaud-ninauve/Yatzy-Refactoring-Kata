@@ -23,13 +23,7 @@ public class Yatzy2 implements YatzyCalculator {
         YatzyCategory category = YatzyCategory.valueOf(categoryName);
 
         // calculate dice frequencies
-        HashMap<Integer, Integer> diceFrequencies = new HashMap<>();
-        for (int i : DICE_VALUES) {
-            diceFrequencies.put(i, 0);
-        }
-        for (int die : dice) {
-            diceFrequencies.put(die, diceFrequencies.get(die) + 1);
-        }
+        Map<Integer, Integer> diceFrequencies = diceFrequencies(dice);
 
         // calculate the score
         int result;
@@ -192,6 +186,17 @@ public class Yatzy2 implements YatzyCalculator {
                 result = 0;
         }
         return result;
+    }
+
+    private static Map<Integer, Integer> diceFrequencies(List<Integer> dice) {
+        Map<Integer, Integer> diceFrequencies = new HashMap<>();
+        for (int i : DICE_VALUES) {
+            diceFrequencies.put(i, 0);
+        }
+        for (int die : dice) {
+            diceFrequencies.put(die, diceFrequencies.get(die) + 1);
+        }
+        return diceFrequencies;
     }
 
 }
