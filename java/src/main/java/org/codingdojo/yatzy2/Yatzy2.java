@@ -29,12 +29,12 @@ public class Yatzy2 implements YatzyCalculator {
         return switch (category) {
             case CHANCE -> scoreChance(dice);
             case YATZY -> scoreYatzy(diceFrequencies);
-            case ONES -> scoreOnes(diceFrequencies);
-            case TWOS -> scoreTwos(diceFrequencies);
-            case THREES -> scoreThrees(diceFrequencies);
-            case FOURS -> scoreFours(diceFrequencies);
-            case FIVES -> scoreFives(diceFrequencies);
-            case SIXES -> scoreSixes(diceFrequencies);
+            case ONES -> scoreNs(diceFrequencies, 1);
+            case TWOS -> scoreNs(diceFrequencies, 2);
+            case THREES -> scoreNs(diceFrequencies, 3);
+            case FOURS -> scoreNs(diceFrequencies, 4);
+            case FIVES -> scoreNs(diceFrequencies, 5);
+            case SIXES -> scoreNs(diceFrequencies, 6);
             case PAIR -> scoreNthOfAKind(diceFrequencies, 2);
             case THREE_OF_A_KIND -> scoreNthOfAKind(diceFrequencies, 3);
             case FOUR_OF_A_KIND -> scoreNthOfAKind(diceFrequencies, 4);
@@ -126,39 +126,9 @@ public class Yatzy2 implements YatzyCalculator {
         return result;
     }
 
-    private static int scoreSixes(Map<Integer, Integer> diceFrequencies) {
+    private static int scoreNs(Map<Integer, Integer> diceFrequencies, int n) {
         int result;
-        result = diceFrequencies.get(6) * 6;
-        return result;
-    }
-
-    private static int scoreFives(Map<Integer, Integer> diceFrequencies) {
-        int result;
-        result = diceFrequencies.get(5) * 5;
-        return result;
-    }
-
-    private static int scoreFours(Map<Integer, Integer> diceFrequencies) {
-        int result;
-        result = diceFrequencies.get(4) * 4;
-        return result;
-    }
-
-    private static int scoreThrees(Map<Integer, Integer> diceFrequencies) {
-        int result;
-        result = diceFrequencies.get(3) * 3;
-        return result;
-    }
-
-    private static int scoreTwos(Map<Integer, Integer> diceFrequencies) {
-        int result;
-        result = diceFrequencies.get(2) * 2;
-        return result;
-    }
-
-    private static int scoreOnes(Map<Integer, Integer> diceFrequencies) {
-        int result;
-        result = diceFrequencies.get(1);
+        result = diceFrequencies.get(n) * n;
         return result;
     }
 
