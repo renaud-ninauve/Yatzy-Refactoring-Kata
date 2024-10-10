@@ -35,9 +35,9 @@ public class Yatzy2 implements YatzyCalculator {
             case FOURS -> scoreFours(diceFrequencies);
             case FIVES -> scoreFives(diceFrequencies);
             case SIXES -> scoreSixes(diceFrequencies);
-            case PAIR -> scorePair(diceFrequencies);
-            case THREE_OF_A_KIND -> scoreThreeOfAKind(diceFrequencies);
-            case FOUR_OF_A_KIND -> scoreRourOfAKind(diceFrequencies);
+            case PAIR -> scoreNthOfAKind(diceFrequencies, 2);
+            case THREE_OF_A_KIND -> scoreNthOfAKind(diceFrequencies, 3);
+            case FOUR_OF_A_KIND -> scoreNthOfAKind(diceFrequencies, 4);
             case SMALL_STRAIGHT -> scoreSmallStraight(dice, diceFrequencies);
             case LARGE_STRAIGHT -> scoreLargeStraight(dice, diceFrequencies);
             case TWO_PAIRS -> scoreTwoPairs(diceFrequencies);
@@ -59,7 +59,6 @@ public class Yatzy2 implements YatzyCalculator {
 
     private static int scoreTwoPairs(Map<Integer, Integer> diceFrequencies) {
         int result;
-        // score if there are two pairs
         int twoPairResult = 0;
         long pairCount = 0L;
         for (Integer frequency : diceFrequencies.values()) {
@@ -114,45 +113,16 @@ public class Yatzy2 implements YatzyCalculator {
         return result;
     }
 
-    private static int scoreRourOfAKind(Map<Integer, Integer> diceFrequencies) {
+    private static int scoreNthOfAKind(Map<Integer, Integer> diceFrequencies, int n) {
         int result;
-        // score if four dice are the same
         int fourKindResult = 0;
         for (int i : DICE_VALUES) {
-            if (diceFrequencies.get(i) >= 4) {
-                fourKindResult = i * 4;
+            if (diceFrequencies.get(i) >= n) {
+                fourKindResult = i * n;
                 break;
             }
         }
         result = fourKindResult;
-        return result;
-    }
-
-    private static int scoreThreeOfAKind(Map<Integer, Integer> diceFrequencies) {
-        int result;
-        int threeKindResult = 0;
-        for (int i : DICE_VALUES) {
-            if (diceFrequencies.get(i) >= 3) {
-                threeKindResult = i * 3;
-                break;
-            }
-        }
-        result = threeKindResult;
-        return result;
-    }
-
-    private static int scorePair(Map<Integer, Integer> diceFrequencies) {
-        int result;
-        // score pair if two dice are the same
-        int pairResult = 0;
-        // score highest pair if there is more than one
-        for (int i : DICE_VALUES) {
-            if (diceFrequencies.get(i) >= 2) {
-                pairResult = i * 2;
-                break;
-            }
-        }
-        result = pairResult;
         return result;
     }
 
