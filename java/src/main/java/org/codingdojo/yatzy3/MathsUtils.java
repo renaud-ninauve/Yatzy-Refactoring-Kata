@@ -17,4 +17,8 @@ public class MathsUtils {
 
         return frequencies;
     }
+
+    public int sum(List<Integer> dice) {
+        return dice.stream().mapToInt(Integer::intValue).sum();
+    }
 }

@@ -17,7 +17,7 @@ public class StraightScorer extends CategoryScorer {
     @Override
     public int calculateScore(List<Integer> dice) {
         if (isStraight(dice) && mathsUtils.frequencies(dice).get(straightIncludes) != 0) {
-            return sum(dice);
+            return mathsUtils.sum(dice);
         }
         return 0;
     }

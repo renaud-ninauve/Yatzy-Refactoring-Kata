@@ -14,7 +14,7 @@ public class FullHouseScorer extends CategoryScorer {
     public int calculateScore(List<Integer> dice) {
         Map<Integer, Integer> frequencies = mathsUtils.frequencies(dice);
         if (frequencies.containsValue(2) && frequencies.containsValue(3)) {
-            return sum(dice);
+            return mathsUtils.sum(dice);
         }
         return 0;
     }

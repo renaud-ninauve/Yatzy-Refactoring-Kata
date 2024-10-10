@@ -9,7 +9,7 @@ public abstract class CategoryScorer {
         YatzyCategory category = YatzyCategory.valueOf(categoryName);
         MathsUtils mathsUtils = new MathsUtils();
         return switch (category) {
-            case CHANCE -> new ChanceScorer();
+            case CHANCE -> new ChanceScorer(mathsUtils);
             case YATZY -> new YatzyPointsScorer(mathsUtils);
             case ONES -> new NumberScorer(mathsUtils, 1);
             case TWOS -> new NumberScorer(mathsUtils, 2);
@@ -28,10 +28,4 @@ public abstract class CategoryScorer {
     }
 
     public abstract int calculateScore(List<Integer> dice);
-
-
-    int sum(List<Integer> dice) {
-        return dice.stream().mapToInt(Integer::intValue).sum();
-    }
-
 }
