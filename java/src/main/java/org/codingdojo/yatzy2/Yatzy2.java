@@ -126,13 +126,7 @@ public class Yatzy2 implements YatzyCalculator {
     }
 
     private static int scoreYatzy(Map<Integer, Integer> diceFrequencies) {
-        int result;
-        int yatzyResult = 0;
-        if (diceFrequencies.containsValue(5)) {
-            yatzyResult = 50;
-        }
-        result = yatzyResult;
-        return result;
+        return diceFrequencies.containsValue(5) ? 50 : 0;
     }
 
     private static int scoreChance(List<Integer> dice) {
