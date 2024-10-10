@@ -21,11 +21,11 @@ public class Yatzy2 implements YatzyCalculator {
     @Override
     public int score(List<Integer> dice, String categoryName) {
         YatzyCategory category = YatzyCategory.valueOf(categoryName);
-
-        // calculate dice frequencies
         Map<Integer, Integer> diceFrequencies = diceFrequencies(dice);
+        return score(dice, category, diceFrequencies);
+    }
 
-        // calculate the score
+    private int score(List<Integer> dice, YatzyCategory category, Map<Integer, Integer> diceFrequencies) {
         int result;
         switch (category) {
             case CHANCE:
