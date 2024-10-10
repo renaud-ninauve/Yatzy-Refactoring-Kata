@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Yatzy3 implements YatzyCalculator {
+    private final CategoryScorerFactory categoryScorerFactory = new CategoryScorerFactory();
+
     @Override
     public List<String> validCategories() {
         return Arrays.stream(YatzyCategory.values()).map(Enum::toString).collect(Collectors.toList());
@@ -15,6 +17,6 @@ public class Yatzy3 implements YatzyCalculator {
 
     @Override
     public int score(List<Integer> dice, String category) {
-        return CategoryScorer.createInstance(category).calculateScore(dice);
+        return categoryScorerFactory.createForCategory(category).calculateScore(dice);
     }
 }
