@@ -46,15 +46,8 @@ public class Yatzy2 implements YatzyCalculator {
     }
 
     private static int scoreFullHouse(List<Integer> dice, Map<Integer, Integer> diceFrequencies) {
-        int result;
-        int fullHouseResult = 0;
-        if (diceFrequencies.containsValue(2) && diceFrequencies.containsValue(3)) {
-            for (Integer die : dice) {
-                fullHouseResult += die;
-            }
-        }
-        result = fullHouseResult;
-        return result;
+        return diceFrequencies.containsValue(2) && diceFrequencies.containsValue(3)
+            ? scoreChance(dice) : 0;
     }
 
     private static int scoreTwoPairs(Map<Integer, Integer> diceFrequencies) {
