@@ -26,57 +26,23 @@ public class Yatzy2 implements YatzyCalculator {
     }
 
     private int score(List<Integer> dice, YatzyCategory category, Map<Integer, Integer> diceFrequencies) {
-        int result;
-        switch (category) {
-            case CHANCE:
-                result = scoreChance(dice);
-                break;
-            case YATZY:
-                result = scoreYatzy(diceFrequencies);
-                break;
-            case ONES:
-                result = scoreOnes(diceFrequencies);
-                break;
-            case TWOS:
-                result = scoreTwos(diceFrequencies);
-                break;
-            case THREES:
-                result = scoreThrees(diceFrequencies);
-                break;
-            case FOURS:
-                result = scoreFours(diceFrequencies);
-                break;
-            case FIVES:
-                result = scoreFives(diceFrequencies);
-                break;
-            case SIXES:
-                result = scoreSixes(diceFrequencies);
-                break;
-            case PAIR:
-                result = scorePair(diceFrequencies);
-                break;
-            case THREE_OF_A_KIND:
-                result = scoreThreeOfAKind(diceFrequencies);
-                break;
-            case FOUR_OF_A_KIND:
-                result = scoreRourOfAKind(diceFrequencies);
-                break;
-            case SMALL_STRAIGHT:
-                result = scoreSmallStraight(dice, diceFrequencies);
-                break;
-            case LARGE_STRAIGHT:
-                result = scoreLargeStraight(dice, diceFrequencies);
-                break;
-            case TWO_PAIRS:
-                result = scoreTwoPairs(diceFrequencies);
-                break;
-            case FULL_HOUSE:
-                result = scoreFullHouse(dice, diceFrequencies);
-                break;
-            default:
-                result = 0;
-        }
-        return result;
+        return switch (category) {
+            case CHANCE -> scoreChance(dice);
+            case YATZY -> scoreYatzy(diceFrequencies);
+            case ONES -> scoreOnes(diceFrequencies);
+            case TWOS -> scoreTwos(diceFrequencies);
+            case THREES -> scoreThrees(diceFrequencies);
+            case FOURS -> scoreFours(diceFrequencies);
+            case FIVES -> scoreFives(diceFrequencies);
+            case SIXES -> scoreSixes(diceFrequencies);
+            case PAIR -> scorePair(diceFrequencies);
+            case THREE_OF_A_KIND -> scoreThreeOfAKind(diceFrequencies);
+            case FOUR_OF_A_KIND -> scoreRourOfAKind(diceFrequencies);
+            case SMALL_STRAIGHT -> scoreSmallStraight(dice, diceFrequencies);
+            case LARGE_STRAIGHT -> scoreLargeStraight(dice, diceFrequencies);
+            case TWO_PAIRS -> scoreTwoPairs(diceFrequencies);
+            case FULL_HOUSE -> scoreFullHouse(dice, diceFrequencies);
+        };
     }
 
     private static int scoreFullHouse(List<Integer> dice, Map<Integer, Integer> diceFrequencies) {
