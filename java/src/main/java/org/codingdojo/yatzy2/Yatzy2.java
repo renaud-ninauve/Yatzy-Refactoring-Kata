@@ -38,8 +38,8 @@ public class Yatzy2 implements YatzyCalculator {
             case PAIR -> scoreNthOfAKind(diceFrequencies, 2);
             case THREE_OF_A_KIND -> scoreNthOfAKind(diceFrequencies, 3);
             case FOUR_OF_A_KIND -> scoreNthOfAKind(diceFrequencies, 4);
-            case SMALL_STRAIGHT -> scoreSmallStraight(dice, diceFrequencies);
-            case LARGE_STRAIGHT -> scoreLargeStraight(dice, diceFrequencies);
+            case SMALL_STRAIGHT -> scoreStraightWithoutDice(dice, diceFrequencies, 6);
+            case LARGE_STRAIGHT -> scoreStraightWithoutDice(dice, diceFrequencies, 1);
             case TWO_PAIRS -> scoreTwoPairs(diceFrequencies);
             case FULL_HOUSE -> scoreFullHouse(dice, diceFrequencies);
         };
@@ -70,16 +70,11 @@ public class Yatzy2 implements YatzyCalculator {
         return result;
     }
 
-    private static int scoreLargeStraight(List<Integer> dice, Map<Integer, Integer> diceFrequencies) {
+    private static int scoreStraightWithoutDice(List<Integer> dice, Map<Integer, Integer> diceFrequencies, int absentDice) {
         int result;
         int largeStraightResult = 0;
-        long straightCount = 0L;
-        for (Integer frequency : diceFrequencies.values()) {
-            if (frequency == 1) {
-                straightCount++;
-            }
-        }
-        if (straightCount == 5 && diceFrequencies.get(1) == 0) {
+        boolean allDicesAreDifferent = allDicesAreDifferent(dice, diceFrequencies);
+        if (allDicesAreDifferent && diceFrequencies.get(absentDice) == 0) {
             for (Integer die : dice) {
                 largeStraightResult += die;
             }
@@ -88,22 +83,14 @@ public class Yatzy2 implements YatzyCalculator {
         return result;
     }
 
-    private static int scoreSmallStraight(List<Integer> dice, Map<Integer, Integer> diceFrequencies) {
-        int result;
-        int smallStraightResult = 0;
-        long count = 0L;
+    private static boolean allDicesAreDifferent(List<Integer> dice, Map<Integer, Integer> diceFrequencies) {
+        long uniqueDices = 0L;
         for (Integer frequency : diceFrequencies.values()) {
             if (frequency == 1) {
-                count++;
+                uniqueDices++;
             }
         }
-        if (count == 5 && diceFrequencies.get(6) == 0) {
-            for (Integer die : dice) {
-                smallStraightResult += die;
-            }
-        }
-        result = smallStraightResult;
-        return result;
+        return uniqueDices == 5;
     }
 
     private static int scoreNthOfAKind(Map<Integer, Integer> diceFrequencies, int n) {
