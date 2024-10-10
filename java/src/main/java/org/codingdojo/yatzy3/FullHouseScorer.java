@@ -3,7 +3,7 @@ package org.codingdojo.yatzy3;
 import java.util.List;
 import java.util.Map;
 
-public class FullHouseScorer extends CategoryScorer {
+public class FullHouseScorer implements  CategoryScorer {
     private final MathsUtils mathsUtils;
 
     public FullHouseScorer(MathsUtils mathsUtils) {

@@ -2,7 +2,7 @@ package org.codingdojo.yatzy3;
 
 import java.util.List;
 
-public class YatzyPointsScorer extends CategoryScorer  {
+public class YatzyPointsScorer implements  CategoryScorer  {
     private final MathsUtils mathsUtils;
 
     public YatzyPointsScorer(MathsUtils mathsUtils) {

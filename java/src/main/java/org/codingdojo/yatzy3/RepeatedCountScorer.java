@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class RepeatedCountScorer extends CategoryScorer  {
+public class RepeatedCountScorer implements  CategoryScorer  {
     private final MathsUtils mathsUtils;
     private final int count;
 

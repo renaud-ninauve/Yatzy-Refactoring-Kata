@@ -2,7 +2,7 @@ package org.codingdojo.yatzy3;
 
 import java.util.List;
 
-public class StraightScorer extends CategoryScorer {
+public class StraightScorer implements  CategoryScorer {
     private final MathsUtils mathsUtils;
     private final int straightIncludes;
 

@@ -4,8 +4,8 @@ import org.codingdojo.YatzyCategory;
 
 import java.util.List;
 
-public abstract class CategoryScorer {
-    public static CategoryScorer createInstance(String categoryName) {
+public interface CategoryScorer {
+    static CategoryScorer createInstance(String categoryName) {
         YatzyCategory category = YatzyCategory.valueOf(categoryName);
         MathsUtils mathsUtils = new MathsUtils();
         return switch (category) {
@@ -27,5 +27,5 @@ public abstract class CategoryScorer {
         };
     }
 
-    public abstract int calculateScore(List<Integer> dice);
+    int calculateScore(List<Integer> dice);
 }
